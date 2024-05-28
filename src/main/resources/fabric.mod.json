@@ -1,0 +1,32 @@
+{
+  "schemaVersion": 1,
+  "id": "arcanus",
+  "version": "${version}",
+  "name": "arcanus-reloaded",
+  "description": "",
+  "authors": [
+    "Viniciusith"
+  ],
+  "contact": {
+    "repo": "https://github.com/viniciusith/arcanusreloaded"
+  },
+  "license": "MIT",
+  "icon": "assets/arcanus/icon.png",
+  "environment": "*",
+  "entrypoints": {
+    "client": [
+      "cloud.viniciusith.arcanus.client.ArcanusReloadedClient"
+    ],
+    "main": [
+      "cloud.viniciusith.arcanus.ArcanusReloaded"
+    ]
+  },
+  "mixins": [
+    "arcanus.mixins.json"
+  ],
+  "depends": {
+    "fabricloader": ">=${loader_version}",
+    "fabric": "*",
+    "minecraft": "${minecraft_version}"
+  }
+}
