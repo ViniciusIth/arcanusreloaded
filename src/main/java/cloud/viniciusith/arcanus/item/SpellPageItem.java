@@ -8,6 +8,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtList;
+import net.minecraft.nbt.NbtString;
 import net.minecraft.text.Text;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
@@ -15,6 +16,8 @@ import org.jetbrains.annotations.Nullable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+
+import static cloud.viniciusith.arcanus.spell.Spell.formatSpellPattern;
 
 public class SpellPageItem extends Item {
     private static final String SPELL_KEY = "Spell";
@@ -31,6 +34,9 @@ public class SpellPageItem extends Item {
             Spell spell = spellOpt.get();
             tooltip.add(Text.literal("Spell: " + getSpellName(stack).get()));
             tooltip.add(Text.literal("Mana Cost: " + spell.getManaCost()));
+            getSpellPattern(stack).ifPresent(patterns -> {
+                tooltip.add(Text.literal("Pattern: " + formatSpellPattern(patterns)));
+            });
         } else {
             tooltip.add(Text.literal("Unknown Spell"));
         }
@@ -92,11 +98,23 @@ public class SpellPageItem extends Item {
         return Optional.of(spellPattern);
     }
 
-    public static ItemStack addSpell(ItemStack stack, String spellName) {
+    public static void addSpell(ItemStack stack, String spellName) {
         NbtCompound nbt = stack.getOrCreateNbt();
         nbt.putString(SPELL_KEY, spellName);
         stack.setNbt(nbt);
+    }
 
-        return stack;
+    public static void setSpellPattern(ItemStack stack, ArrayList<Spell.Pattern> spellPattern) {
+        if (!(stack.getItem() instanceof SpellPageItem)) {
+            return;
+        }
+
+        NbtCompound nbt = stack.getOrCreateNbt();
+        NbtList patternList = new NbtList();
+        for (Spell.Pattern pattern : spellPattern) {
+            patternList.add(NbtString.of(pattern.name()));
+        }
+        nbt.put(SPELL_PATTERN_KEY, patternList);
+        stack.setNbt(nbt);
     }
 }
