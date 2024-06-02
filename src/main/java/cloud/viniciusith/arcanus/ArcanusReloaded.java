@@ -1,6 +1,7 @@
 package cloud.viniciusith.arcanus;
 
 import cloud.viniciusith.arcanus.registry.ItemRegister;
+import cloud.viniciusith.arcanus.registry.SpellRegistry;
 import net.fabricmc.api.ModInitializer;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -11,6 +12,7 @@ public class ArcanusReloaded implements ModInitializer {
 
     @Override
     public void onInitialize() {
+        SpellRegistry.registerAllSpells();
         ItemRegister.RegisterAll();
     }
 }
