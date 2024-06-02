@@ -1,12 +1,18 @@
 package cloud.viniciusith.arcanus.item;
 
+import cloud.viniciusith.arcanus.ArcanusReloaded;
+import cloud.viniciusith.arcanus.helpers.InventoryUtils;
 import cloud.viniciusith.arcanus.item.grimoire.GrimoireScreenHandler;
 import cloud.viniciusith.arcanus.spell.Spell;
 import net.fabricmc.fabric.api.screenhandler.v1.ExtendedScreenHandlerFactory;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
+import net.minecraft.inventory.Inventory;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NbtCompound;
+import net.minecraft.nbt.NbtElement;
+import net.minecraft.nbt.NbtList;
 import net.minecraft.network.PacketByteBuf;
 import net.minecraft.screen.ScreenHandler;
 import net.minecraft.server.network.ServerPlayerEntity;
@@ -15,14 +21,18 @@ import net.minecraft.sound.SoundEvents;
 import net.minecraft.text.Text;
 import net.minecraft.util.Hand;
 import net.minecraft.util.TypedActionResult;
+import net.minecraft.util.collection.DefaultedList;
 import net.minecraft.world.World;
 
-public class GrimoireItem extends Item {
-    public final int spellSlots;
+import java.util.Arrays;
 
-    public GrimoireItem(Settings settings, int spellSlots) {
+public class GrimoireItem extends Item {
+    public static final String SPELL_PAGES_KEY = "SpellPages";
+    public static final int MAX_SPELL_SLOTS = 9; // cannot be any bigger because of how the mod works
+
+
+    public GrimoireItem(Settings settings) {
         super(settings);
-        this.spellSlots = spellSlots;
     }
 
     @Override
@@ -50,13 +60,43 @@ public class GrimoireItem extends Item {
 
                 @Override
                 public ScreenHandler createMenu(int syncId, PlayerInventory inv, PlayerEntity player) {
+                    ArcanusReloaded.LOGGER.debug(grimoireItemStack.toString());
                     return new GrimoireScreenHandler(syncId, inv, grimoireItemStack);
                 }
             });
         }
     }
 
-    public Spell[] getSpells() {
-        return null;
+    public DefaultedList<ItemStack> getSpellPages(ItemStack stack) {
+        DefaultedList<ItemStack> spellPages = DefaultedList.ofSize(MAX_SPELL_SLOTS, ItemStack.EMPTY);
+        NbtCompound grimoireNbt = stack.getOrCreateNbt();
+        if (grimoireNbt.contains(SPELL_PAGES_KEY)) {
+            NbtList spellPagesNbt = grimoireNbt.getList(SPELL_PAGES_KEY, NbtElement.COMPOUND_TYPE);
+            for (int i = 0; i < spellPagesNbt.size(); i++) {
+                ItemStack itemStack = ItemStack.fromNbt(spellPagesNbt.getCompound(i));
+                spellPages.set(i, itemStack);
+            }
+        }
+
+        ArcanusReloaded.LOGGER.debug(Arrays.toString(spellPages.toArray()));
+
+        stack.setNbt(grimoireNbt);
+
+        return spellPages;
+    }
+
+    public void setSpellPages(ItemStack grimoireStack, DefaultedList<ItemStack> spellPages) {
+        NbtCompound grimoireNbt = grimoireStack.getOrCreateNbt();
+
+        NbtList spellPagesList = new NbtList();
+
+        for (ItemStack spellPage : spellPages) {
+            NbtCompound spellPageNbt = new NbtCompound();
+            spellPage.writeNbt(spellPageNbt);
+            spellPagesList.add(spellPageNbt);
+        }
+
+        grimoireNbt.put(SPELL_PAGES_KEY, spellPagesList);
+        grimoireStack.setNbt(grimoireNbt);
     }
 }
