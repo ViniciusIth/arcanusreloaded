@@ -11,14 +11,15 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
-public class BaseWandItem extends Item {
+public class WandItem extends Item {
     private final int maxExperience;
-    private final int castingCost;
+    private final int castingCostMultiplier;
     private final Item upgrade;
 
-    public BaseWandItem(int maxExperience, int castingCost, @Nullable Item upgrade, Settings settings) {
+
+    public WandItem(int maxExperience, int castingCostMultiplier, @Nullable Item upgrade, Settings settings) {
         super(settings);
-        this.castingCost = castingCost;
+        this.castingCostMultiplier = castingCostMultiplier;
         this.maxExperience = maxExperience;
         this.upgrade = upgrade;
     }
@@ -32,8 +33,6 @@ public class BaseWandItem extends Item {
             tooltip.add(Text.translatable("tooltip.arcanus.wand_upgrade").formatted(Formatting.DARK_AQUA));
         }
     }
-
-
 
     public boolean hasUpgrade() {
         return upgrade != null;

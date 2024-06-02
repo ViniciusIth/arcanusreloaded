@@ -26,6 +26,5 @@ public class ArcanusReloaded implements ModInitializer {
     public void onInitialize() {
         SpellRegistry.registerAllSpells();
         ItemRegister.RegisterAll();
-        ServerTickEvents.END_SERVER_TICK.register(server -> WandItem.onServerTick());
     }
 }
