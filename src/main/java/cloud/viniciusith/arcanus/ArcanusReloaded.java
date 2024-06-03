@@ -1,6 +1,7 @@
 package cloud.viniciusith.arcanus;
 
 import cloud.viniciusith.arcanus.item.grimoire.GrimoireScreenHandler;
+import cloud.viniciusith.arcanus.network.CastSpellPacket;
 import cloud.viniciusith.arcanus.registry.CommandRegistry;
 import cloud.viniciusith.arcanus.registry.ItemRegister;
 import cloud.viniciusith.arcanus.registry.SpellRegistry;
@@ -26,5 +27,6 @@ public class ArcanusReloaded implements ModInitializer {
         SpellRegistry.registerAllSpells();
         ItemRegister.RegisterAll();
         CommandRegistry.registerAll();
+        CastSpellPacket.register();
     }
 }

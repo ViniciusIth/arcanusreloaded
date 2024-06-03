@@ -1,6 +1,9 @@
 package cloud.viniciusith.arcanus.item;
 
+import cloud.viniciusith.arcanus.ArcanusReloaded;
 import net.minecraft.client.item.TooltipContext;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
@@ -10,6 +13,7 @@ import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
+import java.util.Optional;
 
 public class WandItem extends Item {
     private final int maxExperience;
@@ -36,5 +40,29 @@ public class WandItem extends Item {
 
     public boolean hasUpgrade() {
         return upgrade != null;
+    }
+
+    public static Optional<ItemStack> findGrimoire(PlayerEntity caster) {
+        PlayerInventory casterInventory = caster.getInventory();
+
+        for (int i = 0; i < casterInventory.size(); i++) {
+            ArcanusReloaded.LOGGER.debug(casterInventory.getStack(i).getTranslationKey());
+            if (casterInventory.getStack(i).getItem() instanceof GrimoireItem)
+                return Optional.of(casterInventory.getStack(i));
+        }
+
+        return Optional.empty();
+    }
+
+    public int getMaxExperience() {
+        return maxExperience;
+    }
+
+    public int getCastingCostMultiplier() {
+        return castingCostMultiplier;
+    }
+
+    public Item getUpgrade() {
+        return upgrade;
     }
 }

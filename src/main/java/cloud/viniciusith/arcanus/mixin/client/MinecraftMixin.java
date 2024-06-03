@@ -1,10 +1,15 @@
 package cloud.viniciusith.arcanus.mixin.client;
 
+import cloud.viniciusith.arcanus.ArcanusReloaded;
 import cloud.viniciusith.arcanus.helpers.ArcanusHelper;
+import cloud.viniciusith.arcanus.item.GrimoireItem;
+import cloud.viniciusith.arcanus.item.SpellPageItem;
 import cloud.viniciusith.arcanus.item.WandItem;
+import cloud.viniciusith.arcanus.network.CastSpellPacket;
 import cloud.viniciusith.arcanus.spell.Spell;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.network.ClientPlayerEntity;
+import net.minecraft.item.ItemStack;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.text.MutableText;
@@ -19,58 +24,67 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import java.util.ArrayList;
-import java.util.List;
+import java.util.Optional;
 
 @Mixin(MinecraftClient.class)
 public class MinecraftMixin {
     @Unique
-    private final List<Spell.Pattern> pattern = new ArrayList<>(3);
+    private final ArrayList<Spell.Pattern> pattern = new ArrayList<>(3);
     @Shadow
     @Nullable
     public ClientPlayerEntity player;
     @Unique
-    private boolean unfinishedSpell = true;
+    private boolean unfinishedSpell = false;
     @Unique
     private int timer = 0;
 
-
     @Inject(method = "tick", at = @At("HEAD"))
     public void tick(CallbackInfo info) {
-        if (timer == 0 && !pattern.isEmpty())
+        if (timer == 0 && !pattern.isEmpty()) {
             pattern.clear();
+        }
 
-        if (player == null)
+        if (player == null) {
             return;
+        }
 
         if (player.getMainHandStack().getItem() instanceof WandItem) {
             if (timer > 0) {
                 MutableText hyphen = Text.literal("-");
 
-                player.sendMessage(ArcanusHelper.getSpellInputs(pattern, 0).append(hyphen).append(ArcanusHelper.getSpellInputs(pattern, 1)).append(hyphen).append(ArcanusHelper.getSpellInputs(pattern, 2)), true);
+                player.sendMessage(ArcanusHelper.getSpellInputs(pattern, 0)
+                        .append(hyphen)
+                        .append(ArcanusHelper.getSpellInputs(pattern, 1))
+                        .append(hyphen)
+                        .append(ArcanusHelper.getSpellInputs(pattern, 2)), true);
 
                 if (pattern.size() == 3) {
                     unfinishedSpell = false;
-//                    for (Spell spell : Arcanus.SPELL) {
-//                        if (pattern.equals(spell.getSpellPattern())) {
-//                            CastSpellPacket.send(Arcanus.SPELL.getId(spell));
-//                            unfinishedSpell = false;
-//                            break;
-//                        } else {
-//                            if (Arcanus.SPELL.getId(spell) + 1 == Arcanus.SPELL.keySet().size()) {
-//                                player.displayClientMessage(Arcanus.translate("error", "missing_spell").withStyle(ChatFormatting.RED), true);
-//                                unfinishedSpell = false;
-//                            }
-//                        }
-//                    }
+
+                    Optional<ItemStack> grimoireStack = WandItem.findGrimoire(player);
+                    if (grimoireStack.isPresent()) {
+                        // Returning null for some reason
+                        ItemStack spell = GrimoireItem.findSpellByPattern(grimoireStack.get(), pattern);
+
+                        if (spell != null) {
+                            ArcanusReloaded.LOGGER.warn(spell.toString());
+
+                            SpellPageItem.getSpellName(spell).ifPresent(CastSpellPacket::send);
+                        }
+                    }
+
                     timer = 0;
                 }
-            } else if (pattern.size() < 3 && unfinishedSpell)
+            } else if (pattern.size() < 3 && unfinishedSpell) {
                 player.sendMessage(Text.literal(""), true);
-        } else
+            }
+        } else {
             timer = 0;
+        }
 
-        if (timer > 0)
+        if (timer > 0) {
             timer--;
+        }
     }
 
     @Inject(method = "handleInputEvents", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/MinecraftClient;doItemUse()V", ordinal = 0), cancellable = true)

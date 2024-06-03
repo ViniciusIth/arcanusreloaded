@@ -34,9 +34,7 @@ public class SpellPageItem extends Item {
             Spell spell = spellOpt.get();
             tooltip.add(Text.literal("Spell: " + getSpellName(stack).get()));
             tooltip.add(Text.literal("Mana Cost: " + spell.getManaCost()));
-            getSpellPattern(stack).ifPresent(patterns -> {
-                tooltip.add(Text.literal("Pattern: " + formatSpellPattern(patterns)));
-            });
+            getSpellPattern(stack).ifPresent(patterns -> tooltip.add(Text.literal("Pattern: " + formatSpellPattern(patterns))));
         } else {
             tooltip.add(Text.literal("Unknown Spell"));
         }
@@ -68,7 +66,7 @@ public class SpellPageItem extends Item {
         }
     }
 
-    public Optional<String> getSpellName(ItemStack stack) {
+    public static Optional<String> getSpellName(ItemStack stack) {
         if (!(stack.getItem() instanceof SpellPageItem)) {
             return Optional.empty();
         }
@@ -79,7 +77,7 @@ public class SpellPageItem extends Item {
         return Optional.of(spellNBT.getString(SPELL_KEY));
     }
 
-    public Optional<ArrayList<Spell.Pattern>> getSpellPattern(ItemStack stack) {
+    public static Optional<ArrayList<Spell.Pattern>> getSpellPattern(ItemStack stack) {
         if (!(stack.getItem() instanceof SpellPageItem)) {
             return Optional.empty();
         }

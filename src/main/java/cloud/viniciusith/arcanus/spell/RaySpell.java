@@ -1,8 +1,8 @@
 package cloud.viniciusith.arcanus.spell;
 
-import cloud.viniciusith.arcanus.component.entity.PlayerMagicCaster;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.particle.ParticleTypes;
+import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
@@ -13,24 +13,23 @@ public class RaySpell extends Spell {
     }
 
     @Override
-    public void OnCast(PlayerMagicCaster caster) {
-        LivingEntity entity = caster.getEntity();
-        entity.heal(10);
+    public void OnCast(ServerPlayerEntity caster) {
+        caster.heal(10);
 
-        entity.getWorld().playSound(entity, entity.getBlockPos(), SoundEvents.ENTITY_TURTLE_EGG_HATCH, SoundCategory.PLAYERS, 2F, 2F);
+        caster.getWorld().playSound((LivingEntity) caster, caster.getBlockPos(), SoundEvents.ENTITY_TURTLE_EGG_HATCH, SoundCategory.PLAYERS, 2F, 2F);
 
         for (int amount = 0; amount < 32; amount++) {
-            float offsetX = ((entity.getRandom().nextInt(3) - 1) * entity.getRandom().nextFloat());
-            float offsetY = entity.getRandom().nextFloat() * 2F;
-            float offsetZ = ((entity.getRandom().nextInt(3) - 1) * entity.getRandom().nextFloat());
+            float offsetX = ((caster.getRandom().nextInt(3) - 1) * caster.getRandom().nextFloat());
+            float offsetY = caster.getRandom().nextFloat() * 2F;
+            float offsetZ = ((caster.getRandom().nextInt(3) - 1) * caster.getRandom().nextFloat());
 
-            if (!entity.getWorld().isClient())
-                ((ServerWorld) entity.getWorld()).spawnParticles(ParticleTypes.HAPPY_VILLAGER, entity.getX() + offsetX, entity.getY() - 0.5 + offsetY, entity.getZ() + offsetZ, 3, 0, 0, 0, 0);
+            if (!caster.getWorld().isClient())
+                ((ServerWorld) caster.getWorld()).spawnParticles(ParticleTypes.HAPPY_VILLAGER, caster.getX() + offsetX, caster.getY() - 0.5 + offsetY, caster.getZ() + offsetZ, 3, 0, 0, 0, 0);
         }
     }
 
     @Override
-    public void OnBurnout(PlayerMagicCaster caster) {
+    public void OnBurnout(ServerPlayerEntity caster) {
 
     }
 }

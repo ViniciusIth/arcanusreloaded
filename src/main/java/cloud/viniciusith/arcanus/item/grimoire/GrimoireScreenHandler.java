@@ -26,9 +26,9 @@ public class GrimoireScreenHandler extends ScreenHandler {
         super(ArcanusReloaded.GRIMOIRE_CONTAINER_TYPE, syncId); // You'll need to replace null with the actual ScreenHandlerType
         this.spellPages = DefaultedList.ofSize(9, ItemStack.EMPTY); // Change 15 to the actual number of slots
 
-        if (grimoireItemStack.getItem() instanceof GrimoireItem grimoireItem) {
-            ArcanusReloaded.LOGGER.debug(Arrays.toString(grimoireItem.getSpellPages(grimoireItemStack).toArray()));
-            DefaultedList<ItemStack> pages = grimoireItem.getSpellPages(grimoireItemStack);
+        if (grimoireItemStack.getItem() instanceof GrimoireItem) {
+            ArcanusReloaded.LOGGER.debug(Arrays.toString(GrimoireItem.findSpellPages(grimoireItemStack).toArray()));
+            DefaultedList<ItemStack> pages = GrimoireItem.findSpellPages(grimoireItemStack);
             for (int i = 0; i < pages.size(); ++i) {
                 this.spellPages.set(i, pages.get(i));
             }

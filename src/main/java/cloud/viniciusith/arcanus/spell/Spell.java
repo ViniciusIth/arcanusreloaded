@@ -1,6 +1,6 @@
 package cloud.viniciusith.arcanus.spell;
 
-import cloud.viniciusith.arcanus.component.entity.PlayerMagicCaster;
+import net.minecraft.server.network.ServerPlayerEntity;
 
 import java.util.List;
 
@@ -12,9 +12,9 @@ public abstract class Spell {
         this.manaCost = manaCost;
     }
 
-    public abstract void OnCast(PlayerMagicCaster caster);
+    public abstract void OnCast(ServerPlayerEntity caster);
 
-    public abstract void OnBurnout(PlayerMagicCaster caster);
+    public abstract void OnBurnout(ServerPlayerEntity caster);
 
     public enum Pattern {
         LEFT("L"), RIGHT("R");
