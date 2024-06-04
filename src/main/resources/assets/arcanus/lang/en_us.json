@@ -1,5 +1,5 @@
 {
-  "commands.arcanus.spells.not_found": "Spell does not exist",
+  "commands.arcanus.spells.not_found": "Spell not in the grimoire",
   "commands.arcanus.spells.pattern_wrong_item": "You must hold a Spell Page item to use this command.",
   "death.attack.magic_burnout": "%s found out what it feels like to be a mod developer",
   "death.attack.magic_burnout.player": "%2$s asked %1$s for a Forge port",
@@ -17,7 +17,7 @@
   "item.arcanus.grimoire": "Grimoire",
   "item.arcanus.item_group": "Arcanus",
   "item.arcanus.master_wand": "Master Wand",
-  "item.arcanus.novice_wand": "Initiate Wand",
+  "item.arcanus.novice_wand": "Novice Wand",
   "spell.arcanus.arcane_barrier": "Arcane Barrier",
   "spell.arcanus.cannot_interact": "Unable to interact in that area",
   "spell.arcanus.discombobulate": "Discombobulate",

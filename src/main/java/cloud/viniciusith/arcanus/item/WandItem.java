@@ -1,6 +1,8 @@
 package cloud.viniciusith.arcanus.item;
 
 import net.minecraft.client.item.TooltipContext;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
@@ -10,15 +12,17 @@ import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
+import java.util.Optional;
 
-public class BaseWandItem extends Item {
+public class WandItem extends Item {
     private final int maxExperience;
-    private final int castingCost;
+    private final int castingCostMultiplier;
     private final Item upgrade;
 
-    public BaseWandItem(int maxExperience, int castingCost, @Nullable Item upgrade, Settings settings) {
+
+    public WandItem(int maxExperience, int castingCostMultiplier, @Nullable Item upgrade, Settings settings) {
         super(settings);
-        this.castingCost = castingCost;
+        this.castingCostMultiplier = castingCostMultiplier;
         this.maxExperience = maxExperience;
         this.upgrade = upgrade;
     }
@@ -33,9 +37,30 @@ public class BaseWandItem extends Item {
         }
     }
 
-
-
     public boolean hasUpgrade() {
         return upgrade != null;
+    }
+
+    public static Optional<ItemStack> findGrimoire(PlayerEntity caster) {
+        PlayerInventory casterInventory = caster.getInventory();
+
+        for (int i = 0; i < casterInventory.size(); i++) {
+            if (casterInventory.getStack(i).getItem() instanceof GrimoireItem)
+                return Optional.of(casterInventory.getStack(i));
+        }
+
+        return Optional.empty();
+    }
+
+    public int getMaxExperience() {
+        return maxExperience;
+    }
+
+    public int getCastingCostMultiplier() {
+        return castingCostMultiplier;
+    }
+
+    public Item getUpgrade() {
+        return upgrade;
     }
 }
