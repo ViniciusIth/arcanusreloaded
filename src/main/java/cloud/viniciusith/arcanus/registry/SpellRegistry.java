@@ -26,5 +26,6 @@ public class SpellRegistry {
         registerSpell("kinetic", KineticShockSpell.class);
         registerSpell("lunge", LungeSpell.class);
         registerSpell("dream", DreamWarpSpell.class);
+        registerSpell("cloud", EffectCloudSpell.class);
     }
 }

@@ -25,17 +25,17 @@ public class KineticShockSpell extends Spell {
     @Override
     public void OnCast(ServerPlayerEntity caster) {
         final float tickDelta = 1.0F;
+        final int maxDistance = 35;
 
-        HitResult result = SpellCastHelpers.raycast(caster, 35, true, false);
+        HitResult result = SpellCastHelpers.raycast(caster, maxDistance, true, false);
         Vec3d rotation = caster.getRotationVec(tickDelta);
         double startDivisor = 5D;
-        double endDivisor = 15D;
 
         for (int count = 0; count < 8; count++) {
             Vec3d startPos = caster.getEyePos().add((caster.getRandom().nextInt(3) - 1) / startDivisor, (caster.getRandom().nextInt(3) - 1) / startDivisor, (caster.getRandom().nextInt(3) - 1) / startDivisor);
-            Vec3d endPos = result.getPos().add((caster.getRandom().nextInt(3) - 1) / endDivisor, (caster.getRandom().nextInt(3) - 1) / endDivisor, (caster.getRandom().nextInt(3) - 1) / endDivisor);
+            Vec3d endPos = result.getPos().add((caster.getRandom().nextInt(3) - 1) / (double) maxDistance, (caster.getRandom().nextInt(3) - 1) / (double) maxDistance, (caster.getRandom().nextInt(3) - 1) / (double) maxDistance);
 
-            SpellCastHelpers.drawLine(startPos, endPos, caster.getWorld(), 10F, ParticleTypes.SONIC_BOOM);
+            SpellCastHelpers.drawLine(startPos, endPos, caster.getWorld(), 5F, ParticleTypes.SONIC_BOOM);
         }
 
         caster.getWorld().playSoundFromEntity(null, caster, SoundEvents.ENTITY_WARDEN_SONIC_BOOM, SoundCategory.PLAYERS, 1F, caster.getRandom().nextBetween(1, 30));
