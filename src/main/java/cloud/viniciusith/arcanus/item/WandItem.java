@@ -1,6 +1,5 @@
 package cloud.viniciusith.arcanus.item;
 
-import cloud.viniciusith.arcanus.ArcanusReloaded;
 import net.minecraft.client.item.TooltipContext;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
@@ -46,7 +45,6 @@ public class WandItem extends Item {
         PlayerInventory casterInventory = caster.getInventory();
 
         for (int i = 0; i < casterInventory.size(); i++) {
-            ArcanusReloaded.LOGGER.debug(casterInventory.getStack(i).getTranslationKey());
             if (casterInventory.getStack(i).getItem() instanceof GrimoireItem)
                 return Optional.of(casterInventory.getStack(i));
         }

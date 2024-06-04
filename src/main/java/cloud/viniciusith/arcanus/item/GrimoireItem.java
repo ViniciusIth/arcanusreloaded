@@ -1,6 +1,5 @@
 package cloud.viniciusith.arcanus.item;
 
-import cloud.viniciusith.arcanus.ArcanusReloaded;
 import cloud.viniciusith.arcanus.item.grimoire.GrimoireScreenHandler;
 import cloud.viniciusith.arcanus.spell.Spell;
 import net.fabricmc.fabric.api.screenhandler.v1.ExtendedScreenHandlerFactory;
@@ -23,7 +22,6 @@ import net.minecraft.util.collection.DefaultedList;
 import net.minecraft.world.World;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Optional;
 
 public class GrimoireItem extends Item {
@@ -59,7 +57,6 @@ public class GrimoireItem extends Item {
 
                 @Override
                 public ScreenHandler createMenu(int syncId, PlayerInventory inv, PlayerEntity player) {
-                    ArcanusReloaded.LOGGER.debug(grimoireItemStack.toString());
                     return new GrimoireScreenHandler(syncId, inv, grimoireItemStack);
                 }
             });
@@ -73,13 +70,10 @@ public class GrimoireItem extends Item {
             NbtList spellPagesNbt = grimoireNbt.getList(SPELL_PAGES_KEY, NbtElement.COMPOUND_TYPE);
             for (int i = 0; i < spellPagesNbt.size(); i++) {
                 ItemStack itemStack = ItemStack.fromNbt((NbtCompound) spellPagesNbt.getCompound(i).get("Stack"));
-                ArcanusReloaded.LOGGER.error(spellPagesNbt.getCompound(i).toString());
                 spellPages.set(i, itemStack);
             }
 
         }
-
-        ArcanusReloaded.LOGGER.error(Arrays.toString(spellPages.toArray()));
 
         return spellPages;
     }

@@ -3,8 +3,10 @@ package cloud.viniciusith.arcanus.item.grimoire;
 import cloud.viniciusith.arcanus.ArcanusReloaded;
 import cloud.viniciusith.arcanus.helpers.InventoryUtils;
 import cloud.viniciusith.arcanus.item.GrimoireItem;
+import cloud.viniciusith.arcanus.item.SpellPageItem;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
+import net.minecraft.inventory.Inventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtElement;
 import net.minecraft.nbt.NbtList;
@@ -13,24 +15,21 @@ import net.minecraft.screen.ScreenHandler;
 import net.minecraft.screen.slot.Slot;
 import net.minecraft.util.collection.DefaultedList;
 
-import java.util.Arrays;
-
 public class GrimoireScreenHandler extends ScreenHandler {
-    private final DefaultedList<ItemStack> spellPages;
+    private static final int SLOT_SIZE = 18;
 
     public GrimoireScreenHandler(int synchronizationID, PlayerInventory playerInventory, PacketByteBuf packetByteBuf) {
         this(synchronizationID, playerInventory, packetByteBuf.readItemStack());
     }
 
     public GrimoireScreenHandler(int syncId, PlayerInventory playerInventory, ItemStack grimoireItemStack) {
-        super(ArcanusReloaded.GRIMOIRE_CONTAINER_TYPE, syncId); // You'll need to replace null with the actual ScreenHandlerType
-        this.spellPages = DefaultedList.ofSize(9, ItemStack.EMPTY); // Change 15 to the actual number of slots
+        super(ArcanusReloaded.GRIMOIRE_CONTAINER_TYPE, syncId);
+        DefaultedList<ItemStack> spellPages = DefaultedList.ofSize(9, ItemStack.EMPTY);
 
         if (grimoireItemStack.getItem() instanceof GrimoireItem) {
-            ArcanusReloaded.LOGGER.debug(Arrays.toString(GrimoireItem.findSpellPages(grimoireItemStack).toArray()));
             DefaultedList<ItemStack> pages = GrimoireItem.findSpellPages(grimoireItemStack);
             for (int i = 0; i < pages.size(); ++i) {
-                this.spellPages.set(i, pages.get(i));
+                spellPages.set(i, pages.get(i));
             }
         }
 
@@ -46,8 +45,8 @@ public class GrimoireScreenHandler extends ScreenHandler {
         InventoryUtils.fromTag(tag, inventory);
 
 
-        for (int i = 0; i < this.spellPages.size(); ++i) {
-            this.addSlot(new Slot(inventory, i, 8 + (i * 18), 20));
+        for (int i = 0; i < spellPages.size(); ++i) {
+            this.addSlot(new GrimoireSlots(inventory, i, 8 + (i * SLOT_SIZE), 20));
         }
 
         // Add player inventory slots
@@ -68,11 +67,31 @@ public class GrimoireScreenHandler extends ScreenHandler {
         // Add player inventory slots
         for (int m = 0; m < 3; ++m) {
             for (int l = 0; l < 9; ++l) {
-                this.addSlot(new Slot(playerInventory, l + m * 9 + 9, 8 + l * 18, 51 + m * 18));
+                this.addSlot(new Slot(playerInventory, l + m * 9 + 9, 8 + l * SLOT_SIZE, 51 + m * SLOT_SIZE));
             }
         }
         for (int n = 0; n < 9; ++n) {
-            this.addSlot(new Slot(playerInventory, n, 8 + n * 18, 109));
+            this.addSlot(new Slot(playerInventory, n, 8 + n * SLOT_SIZE, 109));
+        }
+    }
+
+    private static class GrimoireSlots extends Slot {
+        public GrimoireSlots(Inventory inventory, int index, int x, int y) {
+            super(inventory, index, x, y);
+        }
+
+        @Override
+        public boolean canInsert(ItemStack stack) {
+            return isStackAllowed(stack);
+        }
+
+        private boolean isStackAllowed(ItemStack stack) {
+            return stack.getItem() instanceof SpellPageItem;
+        }
+
+        @Override
+        public int getMaxItemCount() {
+            return 1;
         }
     }
 }
@@ -96,7 +115,7 @@ public class GrimoireScreenHandler extends ScreenHandler {
 //
 //public class GrimoireScreenHandler extends ScreenHandler {
 //
-//    private static final int SLOT_SQUARE_SIZE = 18;
+//    private static final int SLOT_SQUARE_SIZE = SLOT_SIZE;
 //
 //    private final ItemStack grimoireStack;
 //    public final int xOffset = 60;
@@ -138,12 +157,12 @@ public class GrimoireScreenHandler extends ScreenHandler {
 //        // Player Inventory
 //        for (int i = 0; i < 3; ++i) {
 //            for (int j = 0; j < 9; ++j) {
-//                this.addSlot(new Slot(playerInventory, j + i * 9 + 9, 8 + j * 18, 84 + i * 18));
+//                this.addSlot(new Slot(playerInventory, j + i * 9 + 9, 8 + j * SLOT_SIZE, 84 + i * SLOT_SIZE));
 //            }
 //        }
 //
 //        for (int i = 0; i < 9; ++i) {
-//            this.addSlot(new Slot(playerInventory, i, 8 + i * 18, 142));
+//            this.addSlot(new Slot(playerInventory, i, 8 + i * SLOT_SIZE, 142));
 //        }
 //    }
 //
@@ -160,7 +179,7 @@ public class GrimoireScreenHandler extends ScreenHandler {
 //    }
 //
 //    public Point getPlayerInvSlotPosition(Dimension dimension, int x, int y) {
-//        return new Point((dimension.getWidth() / 2 - 9 * 9 + x * 18), (dimension.getHeight() - padding - 4 * 18 - 3 + y * 18 + (y == 3 ? 4 : 0)));
+//        return new Point((dimension.getWidth() / 2 - 9 * 9 + x * SLOT_SIZE), (dimension.getHeight() - padding - 4 * SLOT_SIZE - 3 + y * SLOT_SIZE + (y == 3 ? 4 : 0)));
 //    }
 //
 //    @Override

@@ -1,6 +1,5 @@
 package cloud.viniciusith.arcanus.mixin.client;
 
-import cloud.viniciusith.arcanus.ArcanusReloaded;
 import cloud.viniciusith.arcanus.helpers.ArcanusHelper;
 import cloud.viniciusith.arcanus.item.GrimoireItem;
 import cloud.viniciusith.arcanus.item.SpellPageItem;
@@ -67,8 +66,6 @@ public class MinecraftMixin {
                         ItemStack spell = GrimoireItem.findSpellByPattern(grimoireStack.get(), pattern);
 
                         if (spell != null) {
-                            ArcanusReloaded.LOGGER.warn(spell.toString());
-
                             SpellPageItem.getSpellName(spell).ifPresent(CastSpellPacket::send);
                         }
                     }

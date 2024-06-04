@@ -23,7 +23,6 @@ public class CastSpellPacket {
     public static final Identifier ID = new Identifier(ArcanusReloaded.MODID, ("cast_spell"));
 
     public static void send(String spellName) {
-        ArcanusReloaded.LOGGER.warn(spellName);
         PacketByteBuf buf = PacketByteBufs.create();
         buf.writeString(spellName);
 
@@ -32,8 +31,6 @@ public class CastSpellPacket {
 
     public static void handle(MinecraftServer server, ServerPlayerEntity player, ServerPlayNetworkHandler handler, PacketByteBuf buf, PacketSender responseSender) {
         String spellName = buf.readString();
-
-        ArcanusReloaded.LOGGER.error("Handling things");
 
         Optional<Class<? extends Spell>> spellClass = SpellRegistry.getSpellClass(spellName);
         if (spellClass.isEmpty()) return;
@@ -46,8 +43,6 @@ public class CastSpellPacket {
             ArcanusReloaded.LOGGER.error(e);
             return;
         }
-
-        ArcanusReloaded.LOGGER.error("Handling things");
 
         server.execute(() -> {
             spell.OnCast(player);
