@@ -1,8 +1,6 @@
 package cloud.viniciusith.arcanus.registry;
 
-import cloud.viniciusith.arcanus.spell.HealSpell;
-import cloud.viniciusith.arcanus.spell.RaySpell;
-import cloud.viniciusith.arcanus.spell.Spell;
+import cloud.viniciusith.arcanus.spell.*;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -25,6 +23,8 @@ public class SpellRegistry {
 
     public static void registerAllSpells() {
         registerSpell("heal", HealSpell.class);
-        registerSpell("ray", RaySpell.class);
+        registerSpell("kinetic", KineticShockSpell.class);
+        registerSpell("lunge", LungeSpell.class);
+        registerSpell("dream", DreamWarpSpell.class);
     }
 }
