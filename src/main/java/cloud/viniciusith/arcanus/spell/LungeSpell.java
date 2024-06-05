@@ -12,6 +12,7 @@ public class LungeSpell extends Spell {
 
     @Override
     public void OnCast(ServerPlayerEntity caster) {
+        // TODO: If the player falls, cancel fall damage
         final float tickDelta = 1.0F;
 
         Vec3d rotation = caster.getRotationVec(tickDelta);
@@ -19,7 +20,8 @@ public class LungeSpell extends Spell {
         caster.setVelocity(rotation.multiply(2.5F));
         caster.velocityModified = true;
 
-        caster.getWorld().playSoundFromEntity(null, caster, SoundEvents.ENTITY_GHAST_SHOOT, SoundCategory.PLAYERS, 1F, 1F);
+        caster.getWorld()
+                .playSoundFromEntity(null, caster, SoundEvents.ENTITY_GHAST_SHOOT, SoundCategory.PLAYERS, 1F, 1F);
     }
 
     @Override
