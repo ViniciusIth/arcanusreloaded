@@ -14,7 +14,7 @@ public class HealSpell extends Spell {
 
     @Override
     public void OnCast(ServerPlayerEntity caster) {
-        caster.heal(10);
+        caster.heal(5);
 
         caster.getWorld().playSound((LivingEntity) caster, caster.getBlockPos(), SoundEvents.ENTITY_TURTLE_EGG_HATCH, SoundCategory.PLAYERS, 2F, 2F);
 

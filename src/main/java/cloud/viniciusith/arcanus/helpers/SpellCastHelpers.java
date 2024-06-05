@@ -20,9 +20,12 @@ public class SpellCastHelpers {
 
         Box box = origin.getBoundingBox().stretch(rotation.multiply(maxDistance)).expand(1.0, 1.0, 1.0);
 
-        HitResult entityHitResult = ProjectileUtil.raycast(origin, startPos, endPos, box, e -> !e.isSpectator() && includeEntity, maxDistance);
+        if (includeEntity) {
+            HitResult entityHitResult = ProjectileUtil.raycast(origin, startPos, endPos, box, e -> !e.isSpectator(), maxDistance);
 
-        if (entityHitResult != null) return entityHitResult;
+            if (entityHitResult != null) return entityHitResult;
+        }
+
 
         return origin.raycast(maxDistance, tickDelta, includeLiquids);
     }
