@@ -1,5 +1,7 @@
 package cloud.viniciusith.arcanus.spell;
 
+import cloud.viniciusith.arcanus.component.base.MagicCaster;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
@@ -11,17 +13,19 @@ public class LungeSpell extends Spell {
     }
 
     @Override
-    public void OnCast(ServerPlayerEntity caster) {
+    public void OnCast(MagicCaster caster) {
+        LivingEntity casterEntity = caster.asEntity();
+
         // TODO: If the player falls, cancel fall damage
         final float tickDelta = 1.0F;
 
-        Vec3d rotation = caster.getRotationVec(tickDelta);
+        Vec3d rotation = casterEntity.getRotationVec(tickDelta);
 
-        caster.setVelocity(rotation.multiply(2.5F));
-        caster.velocityModified = true;
+        casterEntity.setVelocity(rotation.multiply(2.5F));
+        casterEntity.velocityModified = true;
 
-        caster.getWorld()
-                .playSoundFromEntity(null, caster, SoundEvents.ENTITY_GHAST_SHOOT, SoundCategory.PLAYERS, 1F, 1F);
+        casterEntity.getWorld()
+                .playSoundFromEntity(null, casterEntity, SoundEvents.ENTITY_GHAST_SHOOT, SoundCategory.PLAYERS, 1F, 1F);
     }
 
     @Override

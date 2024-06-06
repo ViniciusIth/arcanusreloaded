@@ -1,5 +1,6 @@
 package cloud.viniciusith.arcanus.spell;
 
+import cloud.viniciusith.arcanus.component.base.MagicCaster;
 import cloud.viniciusith.arcanus.helpers.SpellCastHelpers;
 import net.minecraft.entity.AreaEffectCloudEntity;
 import net.minecraft.entity.effect.StatusEffectInstance;
@@ -27,32 +28,42 @@ public class EffectCloudSpell extends Spell {
     }
 
     @Override
-    public void OnCast(ServerPlayerEntity caster) {
+    public void OnCast(MagicCaster caster) {
+        Optional<ServerPlayerEntity> casterEntity = caster.asPlayer();
+        if (casterEntity.isEmpty())
+            return;
+
         final int maxDistance = 35;
 
-        Optional<ItemStack> potionStack = getItemInOffhand(caster);
+        Optional<ItemStack> potionStack = getItemInOffhand(casterEntity.get());
         if (potionStack.isEmpty()) {
             return;
         }
 
-        HitResult result = SpellCastHelpers.raycast(caster, maxDistance, true, false);
+        HitResult result = SpellCastHelpers.raycast(casterEntity.get(), maxDistance, true, false);
         double startDivisor = 5D;
 
         for (int count = 0; count < 8; count++) {
-            Vec3d startPos = caster.getEyePos().add((caster.getRandom().nextInt(3) - 1) / startDivisor, (caster.getRandom().nextInt(3) - 1) / startDivisor, (caster.getRandom().nextInt(3) - 1) / startDivisor);
-            Vec3d endPos = result.getPos().add((caster.getRandom().nextInt(3) - 1) / (double) maxDistance, (caster.getRandom().nextInt(3) - 1) / (double) maxDistance, (caster.getRandom().nextInt(3) - 1) / (double) maxDistance);
+            Vec3d startPos = casterEntity.get().getEyePos()
+                    .add((casterEntity.get().getRandom().nextInt(3) - 1) / startDivisor, (casterEntity.get().getRandom()
+                            .nextInt(3) - 1) / startDivisor, (casterEntity.get().getRandom()
+                            .nextInt(3) - 1) / startDivisor);
+            Vec3d endPos = result.getPos()
+                    .add((casterEntity.get().getRandom().nextInt(3) - 1) / (double) maxDistance, (casterEntity.get()
+                            .getRandom().nextInt(3) - 1) / (double) maxDistance, (casterEntity.get().getRandom()
+                            .nextInt(3) - 1) / (double) maxDistance);
 
-            SpellCastHelpers.drawLine(startPos, endPos, caster.getWorld(), 5F, ParticleTypes.EFFECT);
+            SpellCastHelpers.drawLine(startPos, endPos, casterEntity.get().getWorld(), 5F, ParticleTypes.EFFECT);
         }
 
         if (Objects.requireNonNull(result.getType()) == HitResult.Type.BLOCK) {
             BlockPos pos = ((BlockHitResult) result).getBlockPos();
 
-            applyLingeringPotion(potionStack.get(), PotionUtil.getPotion(potionStack.get()), caster, pos);
+            applyLingeringPotion(potionStack.get(), PotionUtil.getPotion(potionStack.get()), casterEntity.get(), pos);
         } else if (Objects.requireNonNull(result.getType()) == HitResult.Type.ENTITY) {
             BlockPos pos = ((EntityHitResult) result).getEntity().getBlockPos();
 
-            applyLingeringPotion(potionStack.get(), PotionUtil.getPotion(potionStack.get()), caster, pos);
+            applyLingeringPotion(potionStack.get(), PotionUtil.getPotion(potionStack.get()), casterEntity.get(), pos);
         }
     }
 

@@ -55,7 +55,7 @@ public class PlayerMagicCaster implements MagicCaster, AutoSyncedComponent, Serv
     }
 
     @Override
-    public void clearActiveSpell() {
+    public void clearActiveSpells() {
 
     }
 

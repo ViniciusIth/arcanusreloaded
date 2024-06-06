@@ -1,7 +1,9 @@
 package cloud.viniciusith.arcanus.network;
 
 import cloud.viniciusith.arcanus.ArcanusReloaded;
+import cloud.viniciusith.arcanus.component.base.MagicCaster;
 import cloud.viniciusith.arcanus.item.WandItem;
+import cloud.viniciusith.arcanus.registry.ComponentRegistry;
 import cloud.viniciusith.arcanus.registry.SpellRegistry;
 import cloud.viniciusith.arcanus.spell.Spell;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
@@ -45,7 +47,9 @@ public class CastSpellPacket {
         }
 
         server.execute(() -> {
-            spell.OnCast(player);
+            MagicCaster caster = player.getComponent(ComponentRegistry.MAGIC_CASTER_COMPONENT);
+
+            caster.cast(spell);
 
             ItemStack stack = player.getMainHandStack();
             if (stack.getItem() instanceof WandItem wand && wand.hasUpgrade()) {
