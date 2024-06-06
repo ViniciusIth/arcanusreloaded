@@ -19,6 +19,9 @@
     ],
     "main": [
       "cloud.viniciusith.arcanus.ArcanusReloaded"
+    ],
+    "cardinal-components-entity": [
+      "cloud.viniciusith.arcanus.registry.ComponentRegistry"
     ]
   },
   "mixins": [
@@ -29,7 +32,9 @@
     "fabric": "*",
     "minecraft": "${minecraft_version}"
   },
-  "cardinal-components": [
-    "arcanus:magic_caster"
-  ]
+  "custom": {
+    "cardinal-components": [
+      "arcanus:magic_caster"
+    ]
+  }
 }
