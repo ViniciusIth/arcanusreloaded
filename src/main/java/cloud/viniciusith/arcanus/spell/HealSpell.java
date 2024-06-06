@@ -8,8 +8,6 @@ import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
 
-import java.util.Optional;
-
 public class HealSpell extends Spell {
     public HealSpell() {
         super(10);

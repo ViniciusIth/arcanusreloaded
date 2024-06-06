@@ -41,7 +41,14 @@ public class PlayerMagicCaster implements MagicCaster, AutoSyncedComponent, Serv
 
     @Override
     public void cast(Spell spell) {
-        spell.OnCast(this);
+        if (getMana() > 0) {
+            //        if (shouldBurnout(spell.getManaCost())) {
+            //            spell.OnBurnout(this);
+            //        }
+
+            spell.OnCast(this);
+            reduceMana(spell.getManaCost());
+        }
     }
 
     @Override
@@ -112,8 +119,8 @@ public class PlayerMagicCaster implements MagicCaster, AutoSyncedComponent, Serv
         // For now stay like this
         boolean dirty = false;
 
-        if (this.getMana() < this.getMaxMana()) {
-            this.addMana(10);
+        if (this.getMana() < this.getMaxMana() && world.getTime() % 10 == 0) {
+            this.addMana(5);
             dirty = true;
         }
 
