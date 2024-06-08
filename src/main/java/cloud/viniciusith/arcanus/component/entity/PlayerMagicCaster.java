@@ -17,8 +17,9 @@ import java.util.Map;
 public class PlayerMagicCaster implements MagicCaster, AutoSyncedComponent, ServerTickingComponent {
     private final PlayerEntity player;
     private int mana;
-    private int maxMana;
+    private int maxMana = 100;
     private final Map<Spell, Integer> activeSpells = new HashMap<>();
+    private long lastCastTime;
 
     public PlayerMagicCaster(PlayerEntity player) {
         this.player = player;
@@ -46,8 +47,11 @@ public class PlayerMagicCaster implements MagicCaster, AutoSyncedComponent, Serv
             //            spell.OnBurnout(this);
             //        }
 
-            spell.OnCast(this);
+            lastCastTime = this.player.getWorld().getTime();
+
             reduceMana(spell.getManaCost());
+            spell.OnCast(this);
+            player.syncComponent(ComponentRegistry.MAGIC_CASTER_COMPONENT);
         }
     }
 
@@ -119,9 +123,11 @@ public class PlayerMagicCaster implements MagicCaster, AutoSyncedComponent, Serv
         // For now stay like this
         boolean dirty = false;
 
-        if (this.getMana() < this.getMaxMana() && world.getTime() % 10 == 0) {
-            this.addMana(5);
-            dirty = true;
+        if (world.getTime() - this.lastCastTime >= 40 && world.getTime() % 5 == 0) {
+            if (this.getMana() < this.getMaxMana()) {
+                this.addMana(5);
+                dirty = true;
+            }
         }
 
         if (dirty) {
