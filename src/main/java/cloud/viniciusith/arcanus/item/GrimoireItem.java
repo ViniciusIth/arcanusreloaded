@@ -1,7 +1,7 @@
 package cloud.viniciusith.arcanus.item;
 
 import cloud.viniciusith.arcanus.item.grimoire.GrimoireScreenHandler;
-import cloud.viniciusith.arcanus.spell.Spell;
+import cloud.viniciusith.arcanus.spell.base.Spell;
 import net.fabricmc.fabric.api.screenhandler.v1.ExtendedScreenHandlerFactory;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;

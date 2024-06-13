@@ -5,7 +5,7 @@ import cloud.viniciusith.arcanus.item.GrimoireItem;
 import cloud.viniciusith.arcanus.item.SpellPageItem;
 import cloud.viniciusith.arcanus.item.WandItem;
 import cloud.viniciusith.arcanus.network.CastSpellPacket;
-import cloud.viniciusith.arcanus.spell.Spell;
+import cloud.viniciusith.arcanus.spell.base.Spell;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.item.ItemStack;

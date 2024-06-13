@@ -2,7 +2,7 @@ package cloud.viniciusith.arcanus.item;
 
 import cloud.viniciusith.arcanus.ArcanusReloaded;
 import cloud.viniciusith.arcanus.registry.SpellRegistry;
-import cloud.viniciusith.arcanus.spell.Spell;
+import cloud.viniciusith.arcanus.spell.base.Spell;
 import net.minecraft.client.item.TooltipContext;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -17,7 +17,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-import static cloud.viniciusith.arcanus.spell.Spell.formatSpellPattern;
+import static cloud.viniciusith.arcanus.spell.base.Spell.formatSpellPattern;
 
 public class SpellPageItem extends Item {
     private static final String SPELL_KEY = "Spell";

@@ -1,5 +1,7 @@
 package cloud.viniciusith.arcanus.spell;
 
+import cloud.viniciusith.arcanus.component.base.MagicCaster;
+import cloud.viniciusith.arcanus.spell.base.Spell;
 import net.fabricmc.fabric.api.dimension.v1.FabricDimensions;
 import net.minecraft.block.BedBlock;
 import net.minecraft.block.Block;
@@ -25,24 +27,27 @@ public class DreamWarpSpell extends Spell {
     }
 
     @Override
-    public void OnCast(ServerPlayerEntity caster) {
+    public void OnCast(MagicCaster caster) {
         // FIXME: If the player uses a respawn anchor and break it, the overworld spawn doesn't actually take over
+        Optional<ServerPlayerEntity> casterEntity = caster.asPlayer();
+        if (casterEntity.isEmpty())
+            return;
 
-        Optional<Vec3d> spawn = getPlayerSpawn(caster);
-        RegistryKey<World> spawnDimension = caster.getSpawnPointDimension();
+        Optional<Vec3d> spawn = getPlayerSpawn(casterEntity.get());
+        RegistryKey<World> spawnDimension = casterEntity.get().getSpawnPointDimension();
 
         if (spawn.isEmpty()) {
-            caster.sendMessage(Text.translatable("block.minecraft.spawn.not_valid"));
+            casterEntity.get().sendMessage(Text.translatable("block.minecraft.spawn.not_valid"));
             return;
         }
 
-        teleportPlayerTo(caster, spawn.get(), spawnDimension);
-        caster.getWorld().playSoundFromEntity(null, caster, SoundEvents.ITEM_CHORUS_FRUIT_TELEPORT, SoundCategory.PLAYERS, 1F, 1F);
+        teleportPlayerTo(casterEntity.get(), spawn.get(), spawnDimension);
+        casterEntity.get().getWorld()
+                .playSoundFromEntity(null, casterEntity.get(), SoundEvents.ITEM_CHORUS_FRUIT_TELEPORT, SoundCategory.PLAYERS, 1F, 1F);
     }
 
     @Override
     public void OnBurnout(ServerPlayerEntity caster) {
-
     }
 
     public static Optional<Vec3d> getPlayerSpawn(ServerPlayerEntity serverPlayerEntity) {
@@ -68,7 +73,8 @@ public class DreamWarpSpell extends Spell {
             );
         } else if (serverPlayerEntity.isSpawnForced()) {
             boolean footBlockClear = respawnBlock.canMobSpawnInside(respawnBlockState);
-            boolean headBlockClear = targetWorld.getBlockState(spawnPoint.up()).getBlock().canMobSpawnInside(respawnBlockState);
+            boolean headBlockClear = targetWorld.getBlockState(spawnPoint.up()).getBlock()
+                    .canMobSpawnInside(respawnBlockState);
 
             if (footBlockClear && headBlockClear) {
                 return Optional.of(new Vec3d((double) spawnPoint.getX() + 0.5D, (double) spawnPoint.getY() + 0.1D, (double) spawnPoint.getZ() + 0.5D));

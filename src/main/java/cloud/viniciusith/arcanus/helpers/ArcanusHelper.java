@@ -1,6 +1,6 @@
 package cloud.viniciusith.arcanus.helpers;
 
-import cloud.viniciusith.arcanus.spell.Spell;
+import cloud.viniciusith.arcanus.spell.base.Spell;
 import net.minecraft.text.MutableText;
 import net.minecraft.text.Text;
 

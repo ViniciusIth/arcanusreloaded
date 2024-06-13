@@ -2,12 +2,14 @@ package cloud.viniciusith.arcanus.client;
 
 import cloud.viniciusith.arcanus.ArcanusReloaded;
 import cloud.viniciusith.arcanus.client.entity.SolarStrikeEntityRenderer;
+import cloud.viniciusith.arcanus.client.hud.ManaOverlay;
 import cloud.viniciusith.arcanus.item.grimoire.GrimoireHandledScreen;
 import cloud.viniciusith.arcanus.registry.EntityRegistry;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.fabricmc.fabric.api.client.rendering.v1.EntityRendererRegistry;
+import net.fabricmc.fabric.api.client.rendering.v1.HudRenderCallback;
 import net.minecraft.client.gui.screen.ingame.HandledScreens;
 import net.minecraft.client.render.RenderLayer;
 import net.minecraft.client.render.RenderPhase;
@@ -39,5 +41,7 @@ public class ArcanusReloadedClient implements ClientModInitializer {
         EntityRendererRegistry.register(EntityRegistry.SOLAR_STRIKE, SolarStrikeEntityRenderer::new);
 
         HandledScreens.register(ArcanusReloaded.GRIMOIRE_CONTAINER_TYPE, GrimoireHandledScreen::new);
+
+        HudRenderCallback.EVENT.register(new ManaOverlay());
     }
 }

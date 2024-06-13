@@ -1,12 +1,15 @@
 package cloud.viniciusith.arcanus.spell;
 
+import cloud.viniciusith.arcanus.component.base.MagicCaster;
 import cloud.viniciusith.arcanus.helpers.SpellCastHelpers;
+import cloud.viniciusith.arcanus.spell.base.Spell;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.FallingBlock;
 import net.minecraft.block.TntBlock;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.FallingBlockEntity;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.particle.ParticleTypes;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.sound.SoundCategory;
@@ -23,22 +26,31 @@ public class KineticShockSpell extends Spell {
     }
 
     @Override
-    public void OnCast(ServerPlayerEntity caster) {
+    public void OnCast(MagicCaster caster) {
+        LivingEntity casterEntity = caster.asEntity();
+
         final float tickDelta = 1.0F;
         final int maxDistance = 35;
 
-        HitResult result = SpellCastHelpers.raycast(caster, maxDistance, true, false);
-        Vec3d rotation = caster.getRotationVec(tickDelta);
+        HitResult result = SpellCastHelpers.raycast(casterEntity, maxDistance, true, false);
+        Vec3d rotation = casterEntity.getRotationVec(tickDelta);
         double startDivisor = 5D;
 
         for (int count = 0; count < 8; count++) {
-            Vec3d startPos = caster.getEyePos().add((caster.getRandom().nextInt(3) - 1) / startDivisor, (caster.getRandom().nextInt(3) - 1) / startDivisor, (caster.getRandom().nextInt(3) - 1) / startDivisor);
-            Vec3d endPos = result.getPos().add((caster.getRandom().nextInt(3) - 1) / (double) maxDistance, (caster.getRandom().nextInt(3) - 1) / (double) maxDistance, (caster.getRandom().nextInt(3) - 1) / (double) maxDistance);
+            Vec3d startPos = casterEntity.getEyePos()
+                    .add((casterEntity.getRandom().nextInt(3) - 1) / startDivisor, (casterEntity.getRandom()
+                            .nextInt(3) - 1) / startDivisor, (casterEntity.getRandom().nextInt(3) - 1) / startDivisor);
+            Vec3d endPos = result.getPos()
+                    .add((casterEntity.getRandom().nextInt(3) - 1) / (double) maxDistance, (casterEntity.getRandom()
+                            .nextInt(3) - 1) / (double) maxDistance, (casterEntity.getRandom()
+                            .nextInt(3) - 1) / (double) maxDistance);
 
-            SpellCastHelpers.drawLine(startPos, endPos, caster.getWorld(), 5F, ParticleTypes.SONIC_BOOM);
+            SpellCastHelpers.drawLine(startPos, endPos, casterEntity.getWorld(), 5F, ParticleTypes.SONIC_BOOM);
         }
 
-        caster.getWorld().playSoundFromEntity(null, caster, SoundEvents.ENTITY_WARDEN_SONIC_BOOM, SoundCategory.PLAYERS, 1F, caster.getRandom().nextBetween(1, 30));
+        casterEntity.getWorld()
+                .playSoundFromEntity(null, casterEntity, SoundEvents.ENTITY_WARDEN_SONIC_BOOM, SoundCategory.PLAYERS, 1F, casterEntity.getRandom()
+                        .nextBetween(1, 30));
 
         switch (result.getType()) {
             case ENTITY -> {
@@ -48,29 +60,29 @@ public class KineticShockSpell extends Spell {
 
                 entity.setVelocity(rotation.multiply(2.5F).add(0, 1, 0));
 
-                entity.damage(caster.getWorld().getDamageSources().magic(), 1f);
+                entity.damage(casterEntity.getWorld().getDamageSources().magic(), 1f);
             }
             case BLOCK -> {
                 BlockPos pos = ((BlockHitResult) result).getBlockPos();
 
-                BlockState state = caster.getWorld().getBlockState(pos);
+                BlockState state = casterEntity.getWorld().getBlockState(pos);
                 Block block = state.getBlock();
 
                 if (block instanceof TntBlock) {
-                    TntBlock.primeTnt(caster.getWorld(), pos);
-                    caster.getWorld().removeBlock(pos, false);
+                    TntBlock.primeTnt(casterEntity.getWorld(), pos);
+                    casterEntity.getWorld().removeBlock(pos, false);
                 }
 
                 if (block instanceof FallingBlock) {
-                    FallingBlockEntity target = FallingBlockEntity.spawnFromBlock(caster.getWorld(), pos, state);
+                    FallingBlockEntity target = FallingBlockEntity.spawnFromBlock(casterEntity.getWorld(), pos, state);
                     target.setVelocity(rotation.multiply(2.5F).add(0, 1, 0));
                 }
             }
             case MISS -> {
-                caster.setVelocity(rotation.multiply(2.5F));
-                caster.velocityModified = true;
+                casterEntity.setVelocity(rotation.multiply(-2.5F));
+                casterEntity.velocityModified = true;
 
-                caster.damage(caster.getWorld().getDamageSources().magic(), 1f);
+                casterEntity.damage(casterEntity.getWorld().getDamageSources().magic(), 1f);
             }
         }
     }

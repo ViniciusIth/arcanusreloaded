@@ -63,20 +63,20 @@ public class GrimoireHandledScreen extends HandledScreen<GrimoireScreenHandler> 
         // Sides
         // Top side
         drawTexturedQuad(context, texture, x + cornerSize, x + width - cornerSize, y, y + cornerSize, 0,
-                (114 + xTextureOffset) / textureSize, (248 + xTextureOffset) / textureSize, (124 + yTextureOffset) / textureSize, (132 + yTextureOffset) / textureSize);
+                         (114 + xTextureOffset) / textureSize, (248 + xTextureOffset) / textureSize, (124 + yTextureOffset) / textureSize, (132 + yTextureOffset) / textureSize);
         // Bottom side
         drawTexturedQuad(context, texture, x + cornerSize, x + width - cornerSize, y + height - cornerSize, y + height, 0,
-                (114 + xTextureOffset) / textureSize, (248 + xTextureOffset) / textureSize, (182 + yTextureOffset) / textureSize, (190 + yTextureOffset) / textureSize);
+                         (114 + xTextureOffset) / textureSize, (248 + xTextureOffset) / textureSize, (182 + yTextureOffset) / textureSize, (190 + yTextureOffset) / textureSize);
         // Left side
         drawTexturedQuad(context, texture, x, x + cornerSize, y + cornerSize, y + height - cornerSize, 0,
-                (106 + xTextureOffset) / textureSize, (114 + xTextureOffset) / textureSize, (132 + yTextureOffset) / textureSize, (182 + yTextureOffset) / textureSize);
+                         (106 + xTextureOffset) / textureSize, (114 + xTextureOffset) / textureSize, (132 + yTextureOffset) / textureSize, (182 + yTextureOffset) / textureSize);
         // Right side
         drawTexturedQuad(context, texture, x + width - cornerSize, x + width, y + cornerSize, y + height - cornerSize, 0,
-                (248 + xTextureOffset) / textureSize, (256 + xTextureOffset) / textureSize, (132 + yTextureOffset) / textureSize, (182 + yTextureOffset) / textureSize);
+                         (248 + xTextureOffset) / textureSize, (256 + xTextureOffset) / textureSize, (132 + yTextureOffset) / textureSize, (182 + yTextureOffset) / textureSize);
 
         // Center
         drawTexturedQuad(context, texture, x + cornerSize, x + width - cornerSize, y + cornerSize, y + height - cornerSize, 0,
-                (114 + xTextureOffset) / textureSize, (248 + xTextureOffset) / textureSize, (132 + yTextureOffset) / textureSize, (182 + yTextureOffset) / textureSize);
+                         (114 + xTextureOffset) / textureSize, (248 + xTextureOffset) / textureSize, (132 + yTextureOffset) / textureSize, (182 + yTextureOffset) / textureSize);
     }
 
     private static void drawTexturedQuad(DrawContext context, Identifier texture, int x1, int x2, int y1, int y2, int z, float u1, float u2, float v1, float v2) {
