@@ -1,7 +1,7 @@
 // Based off Arcanus-Legacy
 package cloud.viniciusith.arcanus.component.base;
 
-import cloud.viniciusith.arcanus.spell.Spell;
+import cloud.viniciusith.arcanus.spell.base.Spell;
 import dev.onyxstudios.cca.api.v3.component.Component;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.server.network.ServerPlayerEntity;

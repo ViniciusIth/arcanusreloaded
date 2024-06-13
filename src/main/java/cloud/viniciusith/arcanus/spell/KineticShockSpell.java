@@ -2,6 +2,7 @@ package cloud.viniciusith.arcanus.spell;
 
 import cloud.viniciusith.arcanus.component.base.MagicCaster;
 import cloud.viniciusith.arcanus.helpers.SpellCastHelpers;
+import cloud.viniciusith.arcanus.spell.base.Spell;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.FallingBlock;

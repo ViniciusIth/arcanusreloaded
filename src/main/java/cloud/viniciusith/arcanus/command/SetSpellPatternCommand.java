@@ -1,7 +1,7 @@
 package cloud.viniciusith.arcanus.command;
 
 import cloud.viniciusith.arcanus.item.SpellPageItem;
-import cloud.viniciusith.arcanus.spell.Spell;
+import cloud.viniciusith.arcanus.spell.base.Spell;
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.arguments.StringArgumentType;
 import net.minecraft.command.CommandRegistryAccess;

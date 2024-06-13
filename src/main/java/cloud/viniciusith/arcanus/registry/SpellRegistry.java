@@ -1,6 +1,7 @@
 package cloud.viniciusith.arcanus.registry;
 
 import cloud.viniciusith.arcanus.spell.*;
+import cloud.viniciusith.arcanus.spell.base.Spell;
 
 import java.util.HashMap;
 import java.util.Map;

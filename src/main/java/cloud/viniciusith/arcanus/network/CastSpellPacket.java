@@ -5,7 +5,7 @@ import cloud.viniciusith.arcanus.component.base.MagicCaster;
 import cloud.viniciusith.arcanus.item.WandItem;
 import cloud.viniciusith.arcanus.registry.ComponentRegistry;
 import cloud.viniciusith.arcanus.registry.SpellRegistry;
-import cloud.viniciusith.arcanus.spell.Spell;
+import cloud.viniciusith.arcanus.spell.base.Spell;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
 import net.fabricmc.fabric.api.networking.v1.PacketSender;

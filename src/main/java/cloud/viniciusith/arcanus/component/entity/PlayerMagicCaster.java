@@ -3,7 +3,7 @@ package cloud.viniciusith.arcanus.component.entity;
 import cloud.viniciusith.arcanus.component.base.MagicCaster;
 import cloud.viniciusith.arcanus.component.keys.MagicCasterKeys;
 import cloud.viniciusith.arcanus.registry.ComponentRegistry;
-import cloud.viniciusith.arcanus.spell.Spell;
+import cloud.viniciusith.arcanus.spell.base.Spell;
 import dev.onyxstudios.cca.api.v3.component.sync.AutoSyncedComponent;
 import dev.onyxstudios.cca.api.v3.component.tick.ServerTickingComponent;
 import net.minecraft.entity.LivingEntity;

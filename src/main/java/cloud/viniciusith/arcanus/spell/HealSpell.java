@@ -1,6 +1,7 @@
 package cloud.viniciusith.arcanus.spell;
 
 import cloud.viniciusith.arcanus.component.base.MagicCaster;
+import cloud.viniciusith.arcanus.spell.base.Spell;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.particle.ParticleTypes;
 import net.minecraft.server.network.ServerPlayerEntity;
