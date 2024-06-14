@@ -32,10 +32,20 @@ public abstract class Spell {
     public enum Pattern {
         LEFT("L"), RIGHT("R");
 
+        public static final int MAX_SIZE = 3;
         private final String symbol;
 
         Pattern(String symbol) {
             this.symbol = symbol;
+        }
+
+        public static Pattern fromSymbol(String symbol) {
+            for (Pattern pattern : values()) {
+                if (pattern.getSymbol().equals(symbol)) {
+                    return pattern;
+                }
+            }
+            throw new IllegalArgumentException("Unknown symbol: " + symbol);
         }
 
         public String getSymbol() {
