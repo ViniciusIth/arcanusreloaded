@@ -2,10 +2,7 @@ package cloud.viniciusith.arcanus;
 
 import cloud.viniciusith.arcanus.item.grimoire.GrimoireScreenHandler;
 import cloud.viniciusith.arcanus.network.CastSpellPacket;
-import cloud.viniciusith.arcanus.registry.CommandRegistry;
-import cloud.viniciusith.arcanus.registry.EntityRegistry;
-import cloud.viniciusith.arcanus.registry.ItemRegister;
-import cloud.viniciusith.arcanus.registry.SpellRegistry;
+import cloud.viniciusith.arcanus.registry.*;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.screenhandler.v1.ExtendedScreenHandlerType;
 import net.minecraft.registry.Registries;
@@ -28,6 +25,7 @@ public class ArcanusReloaded implements ModInitializer {
         SpellRegistry.registerAllSpells();
         ItemRegister.RegisterAll();
         CommandRegistry.registerAll();
+        PacketRegistry.registerC2SPackets();
         CastSpellPacket.register();
         EntityRegistry.registerAllEntities();
     }

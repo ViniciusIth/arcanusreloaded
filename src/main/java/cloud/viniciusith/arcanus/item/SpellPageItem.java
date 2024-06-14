@@ -1,15 +1,21 @@
 package cloud.viniciusith.arcanus.item;
 
 import cloud.viniciusith.arcanus.ArcanusReloaded;
+import cloud.viniciusith.arcanus.item.spellpage.SpellPageScreen;
 import cloud.viniciusith.arcanus.registry.SpellRegistry;
 import cloud.viniciusith.arcanus.spell.base.Spell;
+import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.item.TooltipContext;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtList;
 import net.minecraft.nbt.NbtString;
 import net.minecraft.text.Text;
+import net.minecraft.util.ActionResult;
+import net.minecraft.util.Hand;
+import net.minecraft.util.TypedActionResult;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
 
@@ -107,6 +113,8 @@ public class SpellPageItem extends Item {
             return;
         }
 
+        ArcanusReloaded.LOGGER.info(spellPattern);
+
         NbtCompound nbt = stack.getOrCreateNbt();
         NbtList patternList = new NbtList();
         for (Spell.Pattern pattern : spellPattern) {
@@ -114,5 +122,13 @@ public class SpellPageItem extends Item {
         }
         nbt.put(SPELL_PATTERN_KEY, patternList);
         stack.setNbt(nbt);
+    }
+
+    @Override
+    public TypedActionResult<ItemStack> use(World world, PlayerEntity user, Hand hand) {
+        if (world.isClient) {
+            MinecraftClient.getInstance().setScreen(new SpellPageScreen(user, user.getStackInHand(hand), hand));
+        }
+        return new TypedActionResult<>(ActionResult.SUCCESS, user.getStackInHand(hand));
     }
 }
