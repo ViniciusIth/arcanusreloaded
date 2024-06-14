@@ -26,7 +26,6 @@ public class ArcanusReloaded implements ModInitializer {
         ItemRegister.RegisterAll();
         CommandRegistry.registerAll();
         PacketRegistry.registerC2SPackets();
-        CastSpellPacket.register();
         EntityRegistry.registerAllEntities();
     }
 }

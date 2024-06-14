@@ -9,7 +9,6 @@ import cloud.viniciusith.arcanus.spell.base.Spell;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
 import net.fabricmc.fabric.api.networking.v1.PacketSender;
-import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.network.PacketByteBuf;
@@ -17,18 +16,17 @@ import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.network.ServerPlayNetworkHandler;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.util.Hand;
-import net.minecraft.util.Identifier;
 
 import java.util.Optional;
 
-public class CastSpellPacket {
-    public static final Identifier ID = new Identifier(ArcanusReloaded.MODID, ("cast_spell"));
+import static cloud.viniciusith.arcanus.registry.PacketRegistry.SPELL_CAST_PACKET_ID;
 
+public class CastSpellPacket {
     public static void send(String spellName) {
         PacketByteBuf buf = PacketByteBufs.create();
         buf.writeString(spellName);
 
-        ClientPlayNetworking.send(ID, buf);
+        ClientPlayNetworking.send(SPELL_CAST_PACKET_ID, buf);
     }
 
     public static void handle(MinecraftServer server, ServerPlayerEntity player, ServerPlayNetworkHandler handler, PacketByteBuf buf, PacketSender responseSender) {
@@ -67,9 +65,5 @@ public class CastSpellPacket {
                 }
             }
         });
-    }
-
-    public static void register() {
-        ServerPlayNetworking.registerGlobalReceiver(ID, CastSpellPacket::handle);
     }
 }
