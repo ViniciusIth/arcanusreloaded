@@ -16,6 +16,6 @@ public class PacketRegistry {
             server.execute(() -> UpdateSpellPatternPacket.handle(packet, player));
         });
 
-        ServerPlayNetworking.registerGlobalReceiver(SPELL_PATTERN_PACKET_ID, CastSpellPacket::handle);
+        ServerPlayNetworking.registerGlobalReceiver(SPELL_CAST_PACKET_ID, CastSpellPacket::handle);
     }
 }
