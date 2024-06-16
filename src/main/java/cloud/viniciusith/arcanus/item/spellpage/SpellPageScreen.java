@@ -17,11 +17,14 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.text.Text;
 import net.minecraft.util.Hand;
+import net.minecraft.util.Identifier;
 
 import java.util.ArrayList;
 
 @Environment(EnvType.CLIENT)
 public class SpellPageScreen extends Screen {
+    private static final Identifier SCREEN_BACKGROUND = new Identifier(ArcanusReloaded.MODID, "textures/gui/spell_page.png");
+
     private final PlayerEntity player;
     private final ItemStack itemStack;
     private final ArrayList<Spell.Pattern> pattern;
@@ -46,8 +49,8 @@ public class SpellPageScreen extends Screen {
 
     @Override
     protected void init() {
-        int widgetWidth = 20;
-        int widgetHeight = 20;
+        int widgetWidth = 18;
+        int widgetHeight = 18;
         int spacing = 10;
         int startX = this.width / 2 - (widgetWidth * 3 + spacing * 2) / 2;
         int startY = this.height / 2 - widgetHeight / 2;
@@ -65,9 +68,18 @@ public class SpellPageScreen extends Screen {
     @Override
     public void render(DrawContext context, int mouseX, int mouseY, float delta) {
         this.renderBackground(context);
+
+        final int TEXTURE_WIDTH = 126; // Actual visible texture, the other parameter refers to the width of the file
+        final int TEXTURE_HEIGHT = 162;
+
+        int x = (this.width - TEXTURE_WIDTH) / 2;
+        int y = (this.height - TEXTURE_HEIGHT) / 2;
+
+        context.drawTexture(SCREEN_BACKGROUND, x, y, 0, 0.0F, 0.0F, TEXTURE_WIDTH, TEXTURE_HEIGHT, 256, 256);
+
         super.render(context, mouseX, mouseY, delta);
 
-        context.drawText(this.textRenderer, this.title, this.width / 2, 15, 0xFFFFFF, true);
+        context.drawText(this.textRenderer, this.title, x + 10, y + 10, 0x000000, false);
 
         letterWidget1.render(context, mouseX, mouseY, delta);
         letterWidget2.render(context, mouseX, mouseY, delta);
@@ -97,7 +109,7 @@ public class SpellPageScreen extends Screen {
         private Spell.Pattern patternKey;
 
         public SingleLetterWidget(int x, int y, int width, int height, Spell.Pattern patternKey, TextRenderer textRenderer) {
-            super(x, y, width, height, Text.of(patternKey.getSymbol()));
+            super(x, y + 40, width, height, Text.of(patternKey.getSymbol()));
 
             this.patternKey = patternKey;
             this.textRenderer = textRenderer;
@@ -105,9 +117,14 @@ public class SpellPageScreen extends Screen {
 
         @Override
         protected void renderButton(DrawContext context, int mouseX, int mouseY, float delta) {
-            context.fill(this.getX(), this.getY(), this.getX() + this.width, this.getY() + this.height, 0xFFAAAAAA);
+// Maybe use a custom font?
 
-            context.drawText(this.textRenderer, patternKey.getSymbol(), this.getX() + this.width / 2, this.getY() + (this.height - 8) / 2, 0x000000FF, true);
+
+            context.fill(this.getX(), this.getY() + 18, this.getX() + this.width, this.getY() + 18 - 2, 0xFF000000);
+            context.drawText(this.textRenderer, patternKey.getSymbol(), this.getX() + this.width / 3, this.getY() + (this.height - 8) / 2, 0x000000FF, false);
+
+            if (isMouseOver(mouseX, mouseY))
+                context.fill(this.getX(), this.getY(), this.getX() + this.width, this.getY() + this.height, 0xEFFFFFFF);
         }
 
         @Override
