@@ -55,6 +55,12 @@ public class SpellPageScreen extends Screen {
         int startX = this.width / 2 - (widgetWidth * 3 + spacing * 2) / 2;
         int startY = this.height / 2 - widgetHeight / 2;
 
+        if (this.pattern.size() < 3) {
+            for (int i = 0; i < 3; i++) {
+                this.pattern.add(Spell.Pattern.LEFT);
+                this.dirty = true;
+            }
+        }
 
         letterWidget1 = new SingleLetterWidget(startX, startY, widgetWidth, widgetHeight, this.pattern.get(0), textRenderer);
         letterWidget2 = new SingleLetterWidget(startX + widgetWidth + spacing, startY, widgetWidth, widgetHeight, this.pattern.get(1), textRenderer);
@@ -91,8 +97,6 @@ public class SpellPageScreen extends Screen {
         super.close();
 
         if (this.dirty) {
-
-            ArcanusReloaded.LOGGER.info("Dirty");
             ArrayList<Spell.Pattern> newPattern = new ArrayList<>();
             newPattern.add(letterWidget1.getPatternKey());
             newPattern.add(letterWidget2.getPatternKey());
@@ -117,7 +121,7 @@ public class SpellPageScreen extends Screen {
 
         @Override
         protected void renderButton(DrawContext context, int mouseX, int mouseY, float delta) {
-// Maybe use a custom font?
+            // Maybe use a custom font?
 
 
             context.fill(this.getX(), this.getY() + 18, this.getX() + this.width, this.getY() + 18 - 2, 0xFF000000);
@@ -140,7 +144,6 @@ public class SpellPageScreen extends Screen {
 
         @Override
         protected void appendClickableNarrations(NarrationMessageBuilder builder) {
-
         }
 
         public Spell.Pattern getPatternKey() {
